@@ -37,7 +37,12 @@ class Birthday(Field):
     def is_date_valid (self, date: str) -> bool:
         date_pattern = r"^(0[1-9]|[12]\d|3[01]).(0[1-9]|1[0-2]).\d{4}$"
         return re.match(date_pattern, date)
+    
+class Title(Field):
+     def __init__(self, value):
+          super().__init__(value)
 
 
-class Note(Field):
-    pass
+class Text(Field):
+     def __init__(self, value):
+          super().__init__(value)
