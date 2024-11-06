@@ -10,8 +10,8 @@ from src import (
 
 
 def main():
-    ADRESBOOK_FILENAME = "addressbook"
-    book = load_data(ADRESBOOK_FILENAME)
+    ADDRESSBOOK_FILENAME = "addressbook"
+    book = load_data(ADDRESSBOOK_FILENAME)
     all_commands = (
         [c for c in help_commands]
         + [c for c in contact_commands]
@@ -30,7 +30,7 @@ def main():
         command, *args = parse_input(user_input)
 
         if command in exit_commands:
-            save_data(book, ADRESBOOK_FILENAME)
+            save_data(book, ADDRESSBOOK_FILENAME)
             print("Good bye!")
             break
 

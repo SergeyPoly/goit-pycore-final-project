@@ -1,22 +1,4 @@
-from src.handlers import (
-    add_contact,
-    add_phone,
-    add_address,
-    add_email,
-    change_phone,
-    change_birthday,
-    change_email,
-    change_address,
-    delete_contact,
-    delete_phone,
-    show_all,
-    search_by_phone,
-    search_by_email,
-    show_phone,
-    add_birthday,
-    show_birthday,
-    birthdays,
-)
+from .handlers import contact_handlers
 
 help_commands = {
     "help": {
@@ -37,73 +19,73 @@ exit_commands = {
 
 contact_commands = {
     "add-contact": {
-        "handler": lambda args, book: add_contact(args, book),
+        "handler": contact_handlers.add_contact,
         "description": "adds a new contact, requires 'name' and 'phone number'",
     },
     "add-phone": {
-        "handler": lambda args, book: add_phone(args, book),
+        "handler": contact_handlers.add_phone,
         "description": "adds additional phone number to the specified contact, requires 'name' and 'phone number'",
     },
     "add-birthday": {
-        "handler": lambda args, book: add_birthday(args, book),
+        "handler": contact_handlers.add_birthday,
         "description": "adds birthday date to the specified contact, requires 'name' and 'birthday date'",
     },
     "add-email": {
-        "handler": lambda args, book: add_email(args, book),
+        "handler": contact_handlers.add_email,
         "description": "adds email to the specified contact, requires 'name' and 'email'",
     },
     "add-address": {
-        "handler": lambda args, book: add_address(args, book),
+        "handler": contact_handlers.add_address,
         "description": "adds address info to the specified contact, requires 'name' and 'address'",
     },
     "change-phone": {
-        "handler": lambda args, book: change_phone(args, book),
+        "handler": contact_handlers.change_phone,
         "description": "changes phone number for the specified contact, requires 'name', 'old phone number' and 'new phone number'",
     },
     "change-birthday": {
-        "handler": lambda args, book: change_birthday(args, book),
+        "handler": contact_handlers.change_birthday,
         "description": "changes birthday date for the specified contact, requires 'name' and 'birthday date'",
     },
     "change-email": {
-        "handler": lambda args, book: change_email(args, book),
+        "handler": contact_handlers.change_email,
         "description": "changes email for the specified contact, requires 'name' and 'email'",
     },
     "change-address": {
-        "handler": lambda args, book: change_address(args, book),
+        "handler": contact_handlers.change_address,
         "description": "changes address info for the specified contact, requires 'name' and 'address'",
     },
     "delete-contact": {
-        "handler": lambda args, book: delete_contact(args, book),
+        "handler": contact_handlers.delete_contact,
         "description": "deletes contact, requires 'name'",
     },
     "delete-phone": {
         #can't delete if one phone record remains
-        "handler": lambda args, book: delete_phone(args, book),
+        "handler": contact_handlers.delete_phone,
         "description": "deletes phone number of the specified contact, requires 'name' and 'phone number'",
     },
     "show-all-contacts": {
         #add optional search by name
-        "handler": lambda args, book: show_all(book),
+        "handler": contact_handlers.show_all,
         "description": "shows all contacts info in the address book",
     },
     "search-contacts-by-phone": {
-        "handler": lambda args, book: search_by_phone(book),
+        "handler": contact_handlers.search_by_phone,
         "description": "shows all contacts info in the address book",
     },
     "search-contacts-by-email": {
-        "handler": lambda args, book: search_by_email(book),
+        "handler": contact_handlers.search_by_email,
         "description": "shows all contacts info in the address book",
     },
     "show-phone": {
-        "handler": lambda args, book: show_phone(args, book),
+        "handler": contact_handlers.show_phone,
         "description": "shows all phone numbers for the specified contact, requires 'name'",
     },
     "show-birthday": {
-        "handler": lambda args, book: show_birthday(args, book),
+        "handler": contact_handlers.show_birthday,
         "description": "shows birthday info for the specified contact, requires 'name'",
     },
     "upcoming-birthdays": {
-        "handler": lambda args, book: birthdays(book),
+        "handler": contact_handlers.birthdays,
         "description": "shows upcoming birthdays in the next week or 'number of days' specified by the user",
     },
 }
