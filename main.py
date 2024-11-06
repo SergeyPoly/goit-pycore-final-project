@@ -5,27 +5,32 @@ from src import (
     help_commands,
     load_data,
     save_data,
+    get_autocomplete_input,
 )
 
 
 def main():
-    book = load_data("addressbook")
-    # аналогічно завантаження даних по нотаткам
-    all_commands = ", ".join(
-        [command for command in help_commands]
-        + [command for command in contact_commands]
-        + [command for command in exit_commands]
+    ADRESBOOK_FILENAME = "addressbook"
+    book = load_data(ADRESBOOK_FILENAME)
+    all_commands = (
+        [c for c in help_commands]
+        + [c for c in contact_commands]
+        + [c for c in exit_commands]
     )
-    # наступний вивід переобити на повноцінне меню
+    autocomplete_input = get_autocomplete_input(all_commands)
+
+    # TODO: наступний вивід переробити на повноцінне меню
     print("Welcome to the assistant bot!")
 
     while True:
-        user_input = input("Enter a command: ")
+        user_input = autocomplete_input(
+            "Enter a command: ",
+        )
+
         command, *args = parse_input(user_input)
 
         if command in exit_commands:
-            save_data(book, "addressbook")
-            # аналогічно збереження даних по нотаткам
+            save_data(book, ADRESBOOK_FILENAME)
             print("Good bye!")
             break
 
@@ -35,7 +40,7 @@ def main():
         else:
             # наступний вивід переобити запропонувати команду help яка буде виводити меню що і з початку
             print(
-                f"Invalid command or no command entered.\nPossible options: {all_commands}."
+                f"Invalid command or no command entered.\nPossible options: {', '.join(all_commands)}."
             )
 
 
