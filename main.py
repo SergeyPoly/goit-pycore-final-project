@@ -1,7 +1,8 @@
 from src import (
     parse_input,
-    commands,
+    contact_commands,
     exit_commands,
+    help_commands,
     load_data,
     save_data,
     get_autocomplete_input,
@@ -9,10 +10,13 @@ from src import (
 
 
 def main():
-    FILENAME = "addressbook"
-    book = load_data(FILENAME)
-
-    all_commands = [c for c in commands] + exit_commands
+    ADDRESSBOOK_FILENAME = "addressbook"
+    book = load_data(ADDRESSBOOK_FILENAME)
+    all_commands = (
+        [c for c in help_commands]
+        + [c for c in contact_commands]
+        + [c for c in exit_commands]
+    )
     autocomplete_input = get_autocomplete_input(all_commands)
 
     # TODO: наступний вивід переробити на повноцінне меню
@@ -26,13 +30,12 @@ def main():
         command, *args = parse_input(user_input)
 
         if command in exit_commands:
-            save_data(book, FILENAME)
-            # аналогічно збереження даних по нотаткам
+            save_data(book, ADDRESSBOOK_FILENAME)
             print("Good bye!")
             break
 
-        if command in commands:
-            print(commands[command](args, book))
+        if command in contact_commands:
+            print(contact_commands[command]["handler"](args, book))
 
         else:
             # наступний вивід переобити запропонувати команду help яка буде виводити меню що і з початку

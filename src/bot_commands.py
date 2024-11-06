@@ -1,104 +1,91 @@
-from src.decorators import input_error, show_all_error
-from src.classes import Record, AddressBook, NotFoundError
+from .handlers import contact_handlers
 
-@input_error
-def add_contact(args: list[str], book: AddressBook) -> str:
-    name, phone = args
-    record: Record = book.find(name)
-
-    if record:
-        record.add_phone(phone)
-    
-    else:
-        record = Record(name)
-        record.add_phone(phone)
-        book.add_record(record)
-    
-    return "Contact added."
-
-
-@input_error
-def change_contact(args: list[str], book: AddressBook) -> str:
-    name, old_phone, new_phone = args
-    record: Record = book.find(name)
-
-    if record is None:
-        raise KeyError(name)
-    
-    record.edit_phone(old_phone, new_phone)
-    
-    return "Contact updated."
-    
-
-@input_error
-def show_phone(args: list[str], book: AddressBook) -> str: 
-    name = args[0]
-    record: Record = book.find(name)
-
-    if record is None:
-        raise KeyError(name)
-    
-    return record
-
-
-@show_all_error
-def show_all(book: AddressBook) -> str:
-    if not book:
-        raise ValueError
-    
-    return "\n".join(f"{record}" for record in book.values())
-
-
-@input_error
-def add_birthday(args: list[str], book: AddressBook):
-    name, birthday = args
-    record: Record = book.find(name)
-
-    if record is None:
-        raise KeyError(name)
-    
-    record.add_birthday(birthday)
-    
-    return "Birthday added."
-
-
-@input_error
-def show_birthday(args, book):
-    name = args[0]
-    record: Record = book.find(name)
-
-    if record is None:
-        raise KeyError(name)
-    
-    if record.birthday is None:
-        raise NotFoundError(f"Birthday date is unknown for {name}")
-    
-    return f"Contact name: {record.name.value}, birthday: {record.birthday.value.strftime("%d.%m.%Y")}"
-
-
-@show_all_error
-#функцію і метод потрібно доробити із врахуванням вхідного аргументу кількості днів, по замовченню нехай буде 7
-def birthdays(book: AddressBook):
-    if not book:
-        raise ValueError
-    
-    upcoming_birthdays = book.get_upcoming_birthdays()
-
-    if not upcoming_birthdays:
-        return "No upcoming birthdays in the next 7 days."
-
-    return "\n".join(f"Contact name: {data["name"]}, birthday: {data["birthday"]}, congratulation date: {data["congratulation_date"]}" for data in upcoming_birthdays)
-
-#для повноцінного меню необхідно розширити словник команд, а саме додати опис кожної команди
-commands = {
-    "hello": lambda *args: "How can I help you?",
-    "add": lambda args, book: add_contact(args, book),
-    "change": lambda args, book: change_contact(args, book),
-    "phone": lambda args, book: show_phone(args, book),
-    "all": lambda args, book: show_all(book),
-    "add-birthday": lambda args, book: add_birthday(args, book),
-    "show-birthday": lambda args, book: show_birthday(args, book),
-    "birthdays": lambda args, book: birthdays(book),
+help_commands = {
+    "help": {
+        # add handler that will show menu or description
+        "handler": lambda *args: "How can I help you?",
+        "description": "shows all menu options or a specific comand description",
+    },
 }
 
-exit_commands = ["close", "exit"]
+exit_commands = {
+    "close": {
+        "description": "exit the application",
+    },
+    "exit": {
+        "description": "exit the application",
+    },
+}
+
+contact_commands = {
+    "add-contact": {
+        "handler": contact_handlers.add_contact,
+        "description": "adds a new contact, requires 'name' and 'phone number'",
+    },
+    "add-phone": {
+        "handler": contact_handlers.add_phone,
+        "description": "adds additional phone number to the specified contact, requires 'name' and 'phone number'",
+    },
+    "add-birthday": {
+        "handler": contact_handlers.add_birthday,
+        "description": "adds birthday date to the specified contact, requires 'name' and 'birthday date'",
+    },
+    "add-email": {
+        "handler": contact_handlers.add_email,
+        "description": "adds email to the specified contact, requires 'name' and 'email'",
+    },
+    "add-address": {
+        "handler": contact_handlers.add_address,
+        "description": "adds address info to the specified contact, requires 'name' and 'address'",
+    },
+    "change-phone": {
+        "handler": contact_handlers.change_phone,
+        "description": "changes phone number for the specified contact, requires 'name', 'old phone number' and 'new phone number'",
+    },
+    "change-birthday": {
+        "handler": contact_handlers.change_birthday,
+        "description": "changes birthday date for the specified contact, requires 'name' and 'birthday date'",
+    },
+    "change-email": {
+        "handler": contact_handlers.change_email,
+        "description": "changes email for the specified contact, requires 'name' and 'email'",
+    },
+    "change-address": {
+        "handler": contact_handlers.change_address,
+        "description": "changes address info for the specified contact, requires 'name' and 'address'",
+    },
+    "delete-contact": {
+        "handler": contact_handlers.delete_contact,
+        "description": "deletes contact, requires 'name'",
+    },
+    "delete-phone": {
+        #can't delete if one phone record remains
+        "handler": contact_handlers.delete_phone,
+        "description": "deletes phone number of the specified contact, requires 'name' and 'phone number'",
+    },
+    "show-all-contacts": {
+        #add optional search by name
+        "handler": contact_handlers.show_all,
+        "description": "shows all contacts info in the address book",
+    },
+    "search-contacts-by-phone": {
+        "handler": contact_handlers.search_by_phone,
+        "description": "shows all contacts info in the address book",
+    },
+    "search-contacts-by-email": {
+        "handler": contact_handlers.search_by_email,
+        "description": "shows all contacts info in the address book",
+    },
+    "show-phone": {
+        "handler": contact_handlers.show_phone,
+        "description": "shows all phone numbers for the specified contact, requires 'name'",
+    },
+    "show-birthday": {
+        "handler": contact_handlers.show_birthday,
+        "description": "shows birthday info for the specified contact, requires 'name'",
+    },
+    "upcoming-birthdays": {
+        "handler": contact_handlers.birthdays,
+        "description": "shows upcoming birthdays in the next week or 'number of days' specified by the user",
+    },
+}
