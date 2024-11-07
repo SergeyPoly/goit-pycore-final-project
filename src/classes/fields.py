@@ -24,7 +24,7 @@ class Phone(Field):
         
     def is_phone_valid(self, phone: str) -> bool:
         return bool(re.fullmatch(r"\d{10}", phone))
-
+    
 
 class Birthday(Field):
     def __init__(self, value: str):
@@ -37,3 +37,20 @@ class Birthday(Field):
     def is_date_valid (self, date: str) -> bool:
         date_pattern = r"^(0[1-9]|[12]\d|3[01]).(0[1-9]|1[0-2]).\d{4}$"
         return re.match(date_pattern, date)
+    
+
+class Email(Field):
+    def __init__(self, value: str):
+        if self.is_email_valid(value):
+                self.value = value
+
+        else:
+            raise ValidationError("Incorrect email format")
+        
+    def is_email_valid(self, email: str) -> bool:
+        return bool(re.match(r"([A-Za-z0-9]+[.-_])*[A-Za-z0-9]+@[A-Za-z0-9-]+(\.[A-Z|a-z]{2,})+", email))
+    
+
+class Address(Field):
+        #TODO add custom validation?
+		pass

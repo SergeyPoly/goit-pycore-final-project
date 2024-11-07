@@ -28,53 +28,39 @@ contact_commands = {
     },
     "add-birthday": {
         "handler": contact_handlers.add_birthday,
-        "description": "adds birthday date to the specified contact, requires 'name' and 'birthday date'",
+        "description": "adds/changes birthday date to the specified contact, requires 'name' and 'birthday date'",
     },
     "add-email": {
         "handler": contact_handlers.add_email,
-        "description": "adds email to the specified contact, requires 'name' and 'email'",
+        "description": "adds/changes email to the specified contact, requires 'name' and 'email'",
     },
     "add-address": {
         "handler": contact_handlers.add_address,
-        "description": "adds address info to the specified contact, requires 'name' and 'address'",
+        "description": "adds/changes address info to the specified contact, requires 'name' and 'address'",
     },
     "change-phone": {
         "handler": contact_handlers.change_phone,
         "description": "changes phone number for the specified contact, requires 'name', 'old phone number' and 'new phone number'",
-    },
-    "change-birthday": {
-        "handler": contact_handlers.change_birthday,
-        "description": "changes birthday date for the specified contact, requires 'name' and 'birthday date'",
-    },
-    "change-email": {
-        "handler": contact_handlers.change_email,
-        "description": "changes email for the specified contact, requires 'name' and 'email'",
-    },
-    "change-address": {
-        "handler": contact_handlers.change_address,
-        "description": "changes address info for the specified contact, requires 'name' and 'address'",
     },
     "delete-contact": {
         "handler": contact_handlers.delete_contact,
         "description": "deletes contact, requires 'name'",
     },
     "delete-phone": {
-        #can't delete if one phone record remains
         "handler": contact_handlers.delete_phone,
         "description": "deletes phone number of the specified contact, requires 'name' and 'phone number'",
     },
     "show-all-contacts": {
-        #add optional search by name
         "handler": contact_handlers.show_all,
-        "description": "shows all contacts info in the address book",
+        "description": "shows all contacts info in the address book, filters by 'name' if search option specified by the user",
     },
     "search-contacts-by-phone": {
         "handler": contact_handlers.search_by_phone,
-        "description": "shows all contacts info in the address book",
+        "description": "shows all contacts info in the address book, filtered by phone number",
     },
     "search-contacts-by-email": {
         "handler": contact_handlers.search_by_email,
-        "description": "shows all contacts info in the address book",
+        "description": "shows all contacts info in the address book, filtered by email",
     },
     "show-phone": {
         "handler": contact_handlers.show_phone,

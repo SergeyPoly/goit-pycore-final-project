@@ -1,5 +1,5 @@
 from functools import wraps
-from src.classes import ValidationError, NotFoundError
+from src.classes import ValidationError, NotFoundError, DuplicationError
 
 def parse_command_error(func):
     @wraps(func)
@@ -18,20 +18,26 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            if func.__name__ == "add_contact":
+            if func.__name__ in ["add_contact", "add_phone", "delete_phone"]:
                 return "Enter name and phone please."
-            
-            if func.__name__ == "change_contact":
-                return "Enter name, old phone and new phone please."
             
             if func.__name__ == "add_birthday":
                 return "Enter name and birthday date."
+            
+            if func.__name__ == "add_email":
+                return "Enter name and email."
+            
+            if func.__name__ == "add_address":
+                return "Enter name and address."
+            
+            if func.__name__ == "change_phone":
+                return "Enter name, old phone and new phone please."
             
         except IndexError:
             return "Enter name please."
         except KeyError as e:
             return f"No such name: {e} in contacts"
-        except (ValidationError, NotFoundError) as e:
+        except (ValidationError, NotFoundError, DuplicationError) as e:
             return e
 
     return inner
@@ -39,10 +45,14 @@ def input_error(func):
 
 def show_all_error(func):
     @wraps(func)
-    def inner(arg):
+    def inner(*args, **kwargs):
         try:
-            return func(arg)
-        except ValueError:
+            return func(*args, **kwargs)
+        except NotFoundError:
             return "No contacts available."
+        except ValueError:
+            return "Enter a positive integer please, min value 1."
+        except IndexError:
+            return "Enter search condition please."
 
     return inner
