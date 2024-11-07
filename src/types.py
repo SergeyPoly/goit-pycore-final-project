@@ -1,0 +1,1 @@
+type CmdArgs = list[str]
