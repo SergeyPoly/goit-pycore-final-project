@@ -22,10 +22,6 @@ def add_contact(args: list[str], book: AddressBook) -> str:
 def add_phone(args: list[str], book: AddressBook) -> str:
     name, phone = args
     record: Record = book.find(name, True)
-
-    if phone in map(lambda phone: phone.value, record.phones):
-        return "Phone already added."
-
     record.add_phone(phone)
 
     return "Phone added."
@@ -97,18 +93,19 @@ def show_all(args: list[str], book: AddressBook) -> str:
     if not book:
         raise NotFoundError
 
-    if bool(len(args)):
+    if len(args):
         search_fragment = args[0]
         found_records = [
-            record
-            for record in sorted(book.values(), key=lambda record: record.name.value)
-            if search_fragment in record.email.value
+            record for record in book.values() if search_fragment in record.email.value
         ]
 
-        if not bool(len(found_records)):
+        if not len(found_records):
             return "No contacts found."
-            
-        return "\n".join(f"{record}" for record in found_records)      
+
+        return "\n".join(
+            f"{record}"
+            for record in sorted(found_records, key=lambda record: record.name.value)
+        )
 
     return "\n".join(
         f"{record}"
@@ -120,37 +117,40 @@ def show_all(args: list[str], book: AddressBook) -> str:
 def search_by_phone(args: list[str], book: AddressBook) -> str:
     if not book:
         raise NotFoundError
-    
+
     search_fragment = args[0]
     found_records = book.search_by_phone(search_fragment)
 
-    if not bool(len(found_records)):
+    if not len(found_records):
         return "No contacts found."
-            
-    return "\n".join(f"{record}" for record in sorted(found_records, key=lambda record: record.name.value))    
+
+    return "\n".join(
+        f"{record}"
+        for record in sorted(found_records, key=lambda record: record.name.value)
+    )
 
 
 @show_all_error
 def search_by_email(args: list[str], book: AddressBook) -> str:
     if not book:
         raise NotFoundError
-    
+
     search_fragment = args[0]
     found_records = book.search_by_email(search_fragment)
 
-    if not bool(len(found_records)):
+    if not len(found_records):
         return "No contacts found."
-            
-    return "\n".join(f"{record}" for record in sorted(found_records, key=lambda record: record.name.value)) 
+
+    return "\n".join(
+        f"{record}"
+        for record in sorted(found_records, key=lambda record: record.name.value)
+    )
 
 
 @input_error
 def show_phone(args: list[str], book: AddressBook) -> str:
     name = args[0]
-    record: Record = book.find(name)
-
-    if record is None:
-        raise KeyError(name)
+    record: Record = book.find(name, True)
 
     return record
 
@@ -174,7 +174,8 @@ def birthdays(args: list[str], book: AddressBook):
     if not book:
         raise NotFoundError
 
-    days = int(args[0]) if bool(len(args)) else 7
+    # check the number of upcoming days specified by the user, if the user has not entered anything, the app defaults to 7
+    days = int(args[0]) if len(args) else 7
 
     if days < 1:
         raise ValueError

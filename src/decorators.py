@@ -1,5 +1,5 @@
 from functools import wraps
-from src.classes import ValidationError, NotFoundError
+from src.classes import ValidationError, NotFoundError, DuplicationError
 
 def parse_command_error(func):
     @wraps(func)
@@ -18,7 +18,7 @@ def input_error(func):
         try:
             return func(*args, **kwargs)
         except ValueError:
-            if func.__name__ == "add_contact" or func.__name__ == "add_phone" or func.__name__ == "delete_phone":
+            if func.__name__ in ["add_contact", "add_phone", "delete_phone"]:
                 return "Enter name and phone please."
             
             if func.__name__ == "add_birthday":
@@ -37,7 +37,7 @@ def input_error(func):
             return "Enter name please."
         except KeyError as e:
             return f"No such name: {e} in contacts"
-        except (ValidationError, NotFoundError) as e:
+        except (ValidationError, NotFoundError, DuplicationError) as e:
             return e
 
     return inner

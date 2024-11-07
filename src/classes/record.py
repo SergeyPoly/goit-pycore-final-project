@@ -1,5 +1,5 @@
 from .fields import Name, Phone, Birthday, Email, Address, Field
-from .custom_errors import NotFoundError
+from .custom_errors import NotFoundError, DuplicationError
 
 
 class Record:
@@ -11,6 +11,9 @@ class Record:
         self.address = None
 
     def add_phone(self, phone: str) -> None:
+        if phone in map(lambda phone: phone.value, self.phones):
+            raise DuplicationError("Phone already added.")
+
         new_phone = Phone(phone)
         self.phones.append(new_phone)
 
