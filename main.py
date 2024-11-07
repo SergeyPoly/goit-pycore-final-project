@@ -12,11 +12,7 @@ from src import (
 def main():
     ADDRESSBOOK_FILENAME = "addressbook"
     book = load_data(ADDRESSBOOK_FILENAME)
-    all_commands = (
-        [c for c in help_commands]
-        + [c for c in contact_commands]
-        + [c for c in exit_commands]
-    )
+    all_commands = [c for c in {**help_commands, **contact_commands, **exit_commands}]
     autocomplete_input = get_autocomplete_input(all_commands)
 
     # TODO: наступний вивід переробити на повноцінне меню
