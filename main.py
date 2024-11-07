@@ -7,6 +7,7 @@ from src import (
     save_data,
     get_autocomplete_input,
 )
+from src.classes import PrettyOutput 
 
 
 def main():
@@ -17,6 +18,8 @@ def main():
 
     # TODO: наступний вивід переробити на повноцінне меню
     print("Welcome to the assistant bot!")
+    pretty_output = PrettyOutput() 
+    pretty_output.print_all_commands([contact_commands, exit_commands, help_commands])
 
     while True:
         user_input = autocomplete_input(
