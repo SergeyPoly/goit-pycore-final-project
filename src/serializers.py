@@ -1,22 +1,18 @@
 import pickle
 from pathlib import Path
-from src.classes import AddressBook
+from src.classes import AddressBook, NoteBook
 
-base_path = Path(__file__).parent
+file_path = Path(__file__).parent / "cache.pkl"
 
-def save_data(book, filename="data"):
-    file_path = Path(f"{base_path}/data/{filename}.pkl")
-    file_path.parent.mkdir(exist_ok=True, parents=True)
 
+def save_data(address_book: AddressBook, note_book: NoteBook):
     with open(file_path, "wb") as file:
-        pickle.dump(book, file)
+        pickle.dump((address_book, note_book), file)
 
 
-def load_data(filename="data"):
-    file_path = Path(f"{base_path}/data/{filename}.pkl")
-    
+def load_data() -> tuple[AddressBook, NoteBook]:
     if file_path.exists():
         with open(file_path, "rb") as file:
-            return pickle.load(file)
-        
-    return AddressBook()
+            return tuple(pickle.load(file))
+
+    return (AddressBook(), NoteBook())

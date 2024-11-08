@@ -1,21 +1,4 @@
-from .handlers import contact_handlers
-
-help_commands = {
-    "help": {
-        # add handler that will show menu or description
-        "handler": lambda *args: "How can I help you?",
-        "description": "shows all menu options or a specific comand description",
-    },
-}
-
-exit_commands = {
-    "close": {
-        "description": "exit the application",
-    },
-    "exit": {
-        "description": "exit the application",
-    },
-}
+from src.handlers import contact_handlers
 
 contact_commands = {
     "add-contact": {
@@ -50,9 +33,13 @@ contact_commands = {
         "handler": contact_handlers.delete_phone,
         "description": "deletes phone number of the specified contact, requires 'name' and 'phone number'",
     },
+    "show-contact": {
+        "handler": contact_handlers.show_contact,
+        "description": "Show contact by the name",
+    },
     "show-all-contacts": {
         "handler": contact_handlers.show_all,
-        "description": "shows all contacts info in the address book, filters by 'name' if search option specified by the user",
+        "description": "shows all contacts info in the address book",
     },
     "search-contacts-by-phone": {
         "handler": contact_handlers.search_by_phone,
