@@ -1,5 +1,7 @@
 #!/bin/sh
 
-rootdir="$(dirname -- "$( readlink -f -- "$0"; )")/.."
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-pip freeze > $rootdir/requirements.txt
+cd "$parent_path/.."
+
+pip freeze > requirements.txt
