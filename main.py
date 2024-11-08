@@ -37,7 +37,10 @@ def main():
             print("Good bye!")
             break
 
-        if command in contact_commands:
+        if command in help_commands:
+            print(help_commands[command]["handler"]())
+
+        elif command in contact_commands:
             print(contact_commands[command]["handler"](args, address_book))
 
         elif command in notebook_commands:

@@ -1,7 +1,7 @@
 from src.decorators import with_input_error_handler, with_empty_check
 from src.classes import Record, AddressBook, NotFoundError
 from src.types import CmdArgs
-from .helpers import format_records, format_upcoming_birthdays
+from .helpers import format_records, format_upcoming_birthdays, get_contact_address
 
 
 @with_input_error_handler("Enter contact name and phone please.")
@@ -53,8 +53,10 @@ def add_email(args: CmdArgs, book: AddressBook) -> str:
 def add_address(args: CmdArgs, book: AddressBook) -> str:
     name, *address_parts = args
 
+    address = get_contact_address(address_parts)
+
     record = book.find(name)
-    record.add_address(" ".join(address_parts))
+    record.add_address(address)
 
     return "Address updated."
 
