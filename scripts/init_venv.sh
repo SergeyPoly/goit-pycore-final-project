@@ -1,7 +1,9 @@
 #!/bin/sh
 
-rootdir="$(dirname -- "$( readlink -f -- "$0"; )")/.."
+parent_path=$( cd "$(dirname "${BASH_SOURCE[0]}")" ; pwd -P )
 
-python3 -m venv $rootdir/.venv
-source $rootdir/.venv/bin/activate
-pip install -r $rootdir/requirements.txt
+cd "$parent_path/.."
+
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
