@@ -5,10 +5,10 @@ from .custom_errors import NotFoundError, DuplicationError
 class Record:
     def __init__(self, name: str):
         self.name = Name(name)
-        self.phones = []
-        self.birthday = None
-        self.email = None
-        self.address = None
+        self.phones: list[Phone] = []
+        self.birthday: Birthday | None = None
+        self.email: Email | None = None
+        self.address: Address | None = None
 
     def add_phone(self, phone: str) -> None:
         if phone in map(lambda phone: phone.value, self.phones):
