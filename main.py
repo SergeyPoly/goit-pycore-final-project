@@ -1,3 +1,4 @@
+from colorama import Fore, Style
 from src import (
     parse_input,
     contact_commands,
@@ -8,24 +9,24 @@ from src import (
     save_data,
     get_autocomplete_input,
 )
+from src.classes import MenuOutput
 
 
 def main():
     address_book, note_book = load_data()
-
-    all_commands = [
-        c
-        for c in {
-            **help_commands,
-            **contact_commands,
-            **notebook_commands,
-            **exit_commands,
-        }
-    ]
-    autocomplete_input = get_autocomplete_input(all_commands)
-
-    # TODO: наступний вивід переробити на повноцінне меню
-    print("Welcome to the assistant bot!")
+    all_commands = {**help_commands, **contact_commands, **notebook_commands, **exit_commands}
+    all_commands_list = [c for c in all_commands]
+    autocomplete_input = get_autocomplete_input(all_commands_list)
+    print(Fore.GREEN + "\nWelcome to the assistant bot!\n" + Style.RESET_ALL)
+    table_rows = map(
+        lambda command: [
+            Fore.YELLOW + command + Style.RESET_ALL,
+            Fore.LIGHTBLACK_EX + all_commands[command]["description"] + Style.RESET_ALL,
+        ],
+        all_commands_list,
+    )
+    menu = MenuOutput()
+    menu.print_menu(table_rows)
 
     while True:
         user_input = autocomplete_input("Enter a command: ")
@@ -38,7 +39,7 @@ def main():
             break
 
         if command in help_commands:
-            print(help_commands[command]["handler"]())
+            menu.print_menu(table_rows)
 
         elif command in contact_commands:
             print(contact_commands[command]["handler"](args, address_book))
@@ -47,9 +48,8 @@ def main():
             print(notebook_commands[command]["handler"](args, note_book))
 
         else:
-            # наступний вивід переобити запропонувати команду help яка буде виводити меню що і з початку
             print(
-                f"Invalid command or no command entered.\nPossible options: {', '.join(all_commands)}."
+                f"Invalid command or no command entered. Type 'help' to see possible options"
             )
 
 

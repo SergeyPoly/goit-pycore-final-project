@@ -5,6 +5,7 @@ from .note import Note
 from .upcoming_birthday import UpcomingBirthday
 from .custom_errors import NotFoundError, ValidationError, DuplicationError
 from .fields import Name, Phone, Birthday
+from .pretty_output import MenuOutput
 
 __all__ = [
     "AddressBook",
@@ -17,5 +18,6 @@ __all__ = [
     "Name",
     "Phone",
     "Birthday",
+    "MenuOutput"
     "UpcomingBirthday",
 ]
