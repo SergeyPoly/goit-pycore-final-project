@@ -1,4 +1,4 @@
-from .fields import Name, Phone, Birthday, Email, Address, Field
+from .fields import Name, Phone, Birthday, Email, Address
 from .custom_errors import NotFoundError, DuplicationError
 
 

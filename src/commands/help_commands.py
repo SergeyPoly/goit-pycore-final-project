@@ -4,4 +4,8 @@ help_commands = {
         "handler": lambda: "How can I help you?",
         "description": "shows all menu options or a specific command description",
     },
+    "hello": {
+        "handler": lambda: "How can I help you?",
+        "description": "Greets the user",
+    },
 }

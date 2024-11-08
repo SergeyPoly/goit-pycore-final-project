@@ -2,6 +2,7 @@ from collections import UserDict
 from datetime import datetime, timedelta
 from .record import Record
 from .fields import Birthday
+from .upcoming_birthday import UpcomingBirthday
 
 
 class AddressBook(UserDict[str, Record]):
@@ -39,7 +40,7 @@ class AddressBook(UserDict[str, Record]):
 
         return found_records
 
-    def get_upcoming_birthdays(self, days: int) -> list[dict[str, str]]:
+    def get_upcoming_birthdays(self, days: int) -> list[UpcomingBirthday]:
         upcoming_birthdays = []
         current_date = datetime.today().date()
         current_year = datetime.now().year
@@ -65,6 +66,6 @@ class AddressBook(UserDict[str, Record]):
                             birthday_this_year + timedelta(days=(7 - weekday))
                         ).strftime(Birthday.DATE_FORMAT)
 
-                    upcoming_birthdays.append(congratulation_info)
+                    upcoming_birthdays.append(UpcomingBirthday(**congratulation_info))
 
         return upcoming_birthdays
