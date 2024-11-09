@@ -118,7 +118,7 @@ def show_all(args: CmdArgs, book: AddressBook):
     if len(args):
         search_fragment = args[0]
 
-        print_contacts_list(list(book.search_by_name(search_fragment)))
+        print_contacts_list(book.search_by_name(search_fragment))
     else:
         print_contacts_list(list(book.values()))
 
