@@ -39,7 +39,7 @@ contact_commands = {
     },
     "show-all-contacts": {
         "handler": contact_handlers.show_all,
-        "description": "shows all contacts info in the address book",
+        "description": "shows all contacts info in the address book, filters by 'name' if search option specified by the user",
     },
     "search-contacts-by-phone": {
         "handler": contact_handlers.search_by_phone,
