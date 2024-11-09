@@ -48,9 +48,7 @@ def main():
             print(notebook_commands[command]["handler"](args, note_book))
 
         else:
-            print(
-                f"Invalid command or no command entered. Type 'help' to see possible options"
-            )
+            MenuOutput.print_invalid_command_message()
 
 
 if __name__ == "__main__":

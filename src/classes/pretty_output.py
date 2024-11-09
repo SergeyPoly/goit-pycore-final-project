@@ -15,3 +15,13 @@ class MenuOutput:
         self.table.add_rows(rows)
         string_table = str(self.table)
         print(string_table + Style.RESET_ALL)
+
+
+    def print_invalid_command_message():
+        print(
+                Style.BRIGHT + Fore.RED + f"Invalid command or no command entered. Type 'help' to see possible options" + Style.RESET_ALL
+            )
+    
+
+    def print_error_message(error_message: str) -> str:
+        return Fore.RED + Style.BRIGHT + error_message + Style.RESET_ALL

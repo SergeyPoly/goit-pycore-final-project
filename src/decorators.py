@@ -1,4 +1,5 @@
 from functools import wraps
+from src.classes import MenuOutput
 
 
 def with_empty_args_handler(func):
@@ -7,7 +8,7 @@ def with_empty_args_handler(func):
         try:
             return func(arg)
         except ValueError:
-            return ["unknown", []]
+            return [ MenuOutput.print_error_message("unknown"), []]
 
     return inner
 
@@ -19,9 +20,9 @@ def with_input_error_handler(value_error_text: str | None = None):
             try:
                 return func(*args, **kwargs)
             except ValueError as e:
-                return value_error_text or str(e)
+                return MenuOutput.print_error_message(value_error_text or str(e))
             except Exception as e:
-                return str(e)
+                return MenuOutput.print_error_message(str(e))
 
         return wrapper
 
@@ -34,7 +35,7 @@ def with_empty_check(book_type: str):
         def wrapper(*args, **kwargs):
             book = args[1]
             if not book:
-                return f"No {book_type} available."
+                return MenuOutput.print_error_message(f"No {book_type} available.")
 
             return func(*args, **kwargs)
 
