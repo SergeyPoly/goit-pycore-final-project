@@ -115,7 +115,12 @@ def show_contact(args: CmdArgs, book: AddressBook):
 
 @with_empty_check("contacts")
 def show_all(args: CmdArgs, book: AddressBook):
-    print_contacts_list(list(book.values()))
+    if len(args):
+        search_fragment = args[0]
+
+        print_contacts_list(list(book.search_by_name(search_fragment)))
+    else:
+        print_contacts_list(list(book.values()))
 
 
 @with_empty_check("contacts")

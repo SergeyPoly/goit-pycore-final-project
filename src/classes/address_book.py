@@ -22,6 +22,15 @@ class AddressBook(UserDict[str, Record]):
 
         del self.data[name]
 
+    def search_by_name(self, search_fragment: str) -> list[Record]:
+        found_records = []
+
+        for record in self.data.values():
+            if search_fragment in record.name.value:
+                found_records.append(record)
+
+        return found_records
+
     def search_by_phone(self, search_fragment: str) -> list[Record]:
         found_records = []
 
