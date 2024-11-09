@@ -14,15 +14,15 @@ from src import (
 def main():
     address_book, note_book = load_data()
 
+    common_commands = {**help_commands, **exit_commands}
     all_commands = {
-        **help_commands,
+        **common_commands,
         **contact_commands,
         **notebook_commands,
-        **exit_commands,
     }
     all_commands_list = [c for c in all_commands]
 
-    menu = BotMenu(all_commands)
+    menu = BotMenu(common_commands, contact_commands, notebook_commands)
 
     menu.print_welcome()
     menu.print_help_menu()
@@ -39,7 +39,7 @@ def main():
             menu.print_good_bye()
             break
 
-        if command in help_commands:
+        if command in common_commands:
             menu.print_help_menu()
 
         elif command in contact_commands:

@@ -24,6 +24,7 @@
 
 ### Корисні скрипти:
 
-- `bash scripts/init_venv.sh` - ініціалізує .venv середовище
+- `bash scripts/init_venv.sh` - ініціалізує .venv середовище (вмикає venv)
 - `bash scripts/save_requirements.sh` - зберігає поточний стан пакетів pip
+- `bash scripts/install_requirements.sh` - встановлює необхідні пакети pip (вмикає venv)
 - `deactivate` - вимикає venv

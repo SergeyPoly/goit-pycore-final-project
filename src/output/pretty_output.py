@@ -35,5 +35,12 @@ def print_error_message(message: str):
     print_message(message, ERROR_COLOR)
 
 
-def print_success_message(message: str, with_end_line_break=True):
-    print_message(message, TITLE_COLOR, True, with_end_line_break)
+def print_success_message(
+    message: str, wit_start_line_break=True, with_end_line_break=True
+):
+    print_message(
+        message,
+        TITLE_COLOR,
+        with_start_line_break=wit_start_line_break,
+        with_end_line_break=with_end_line_break,
+    )

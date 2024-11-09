@@ -52,9 +52,15 @@ def create_table(
     return table
 
 
-def print_table(table: PrettyTable, title: str | None = None):
+def print_table(
+    table: PrettyTable, title: str | None = None, with_title_start_line_break=True
+):
     if title:
-        print_success_message(title, with_end_line_break=False)
+        print_success_message(
+            title,
+            wit_start_line_break=with_title_start_line_break,
+            with_end_line_break=False,
+        )
 
     print_message(str(table), with_start_line_break=bool(not title))
 
