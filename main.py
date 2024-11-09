@@ -43,10 +43,10 @@ def main():
             menu.print_help_menu()
 
         elif command in contact_commands:
-            print(contact_commands[command]["handler"](args, address_book))
+            contact_commands[command]["handler"](args, address_book)
 
         elif command in notebook_commands:
-            print(notebook_commands[command]["handler"](args, note_book))
+            notebook_commands[command]["handler"](args, note_book)
 
         else:
             menu.print_invalid_cmd()

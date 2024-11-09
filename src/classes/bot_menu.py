@@ -1,45 +1,38 @@
-from prettytable import PrettyTable, SINGLE_BORDER
-from colorama import Fore, Style
+from src.output.pretty_output import (
+    print_success_message,
+    print_common_message,
+    print_error_message,
+    apply_color,
+    COMMAND_COLOR,
+    ERROR_COLOR,
+    COMMON_TEXT_COLOR,
+)
+from src.output.table_output import create_table, print_table
 
 
 class BotMenu:
     def __init__(self, all_commands: dict[str, dict[str, str]]):
-        all_commands_list = [c for c in all_commands]
+        commands_table_data = [
+            {"Command": command, "Description": command_data["description"]}
+            for command, command_data in all_commands.items()
+        ]
 
-        table_rows = map(
-            lambda command: [
-                Fore.YELLOW + command + Style.RESET_ALL,
-                Fore.LIGHTBLACK_EX
-                + all_commands[command]["description"]
-                + Style.RESET_ALL,
-            ],
-            all_commands_list,
-        )
+        self.__table = create_table(commands_table_data, self.__format_value)
 
-        command_field = Fore.GREEN + "Command" + Style.RESET_ALL
-        description_field = Fore.GREEN + "Description" + Style.RESET_ALL
-
-        self.__table = PrettyTable([command_field, description_field])
-        self.__table.set_style(SINGLE_BORDER)
-        self.__table.align[command_field] = "l"
-        self.__table.align[description_field] = "l"
-        self.__table.add_rows(table_rows)
-
-    def __print_message(self, message: str, color: str = ""):
-        print(color + f"\n{message}\n" + Style.RESET_ALL)
+    def __format_value(self, index: int, field: str) -> str:
+        color = COMMAND_COLOR if index == 0 else COMMON_TEXT_COLOR
+        return apply_color(field, color)
 
     def print_help_menu(self):
-        string_table = str(self.__table)
-        self.__print_message(string_table)
+        print_table(self.__table, "Bot menu:")
 
     def print_welcome(self):
-        self.__print_message("Welcome to the assistant bot!", Fore.GREEN)
+        print_success_message("Welcome to the assistant bot!")
 
     def print_good_bye(self):
-        self.__print_message("Good bye!", Fore.GREEN)
+        print_common_message("Good bye!")
 
     def print_invalid_cmd(self):
-        self.__print_message(
-            f"Invalid command or no command entered. Type {Fore.YELLOW + "'help'" + Fore.RED} to see possible options",
-            Fore.RED,
+        print_error_message(
+            f"Invalid command or no command entered. Type {COMMAND_COLOR + "'help'" + ERROR_COLOR} to see possible options",
         )

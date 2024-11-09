@@ -1,11 +1,19 @@
 from src.decorators import with_input_error_handler, with_empty_check
-from src.classes import Record, AddressBook, NotFoundError
+from src.classes import Record, AddressBook, OperationForbiddenError
 from src.types import CmdArgs
-from .helpers import format_records, format_upcoming_birthdays, get_contact_address
+from src.output.pretty_output import print_success_message
+from .helpers import (
+    get_contact_address,
+    print_contacts_list,
+    print_single_item,
+    print_upcoming_birthdays,
+    print_contact_birthday,
+    print_contact_phones,
+)
 
 
 @with_input_error_handler("Enter contact name and phone please.")
-def add_contact(args: CmdArgs, book: AddressBook) -> str:
+def add_contact(args: CmdArgs, book: AddressBook):
     name, phone = args
 
     try:
@@ -16,41 +24,41 @@ def add_contact(args: CmdArgs, book: AddressBook) -> str:
         record.add_phone(phone)
         book.add_record(record)
 
-    return "Contact added."
+    print_success_message("Contact added.")
 
 
 @with_input_error_handler("Enter contact name and phone please.")
-def add_phone(args: CmdArgs, book: AddressBook) -> str:
+def add_phone(args: CmdArgs, book: AddressBook):
     name, phone = args
 
     record = book.find(name)
     record.add_phone(phone)
 
-    return "Phone added."
+    print_success_message("Phone added.")
 
 
 @with_input_error_handler("Enter contact name and birthday date.")
-def add_birthday(args: CmdArgs, book: AddressBook) -> str:
+def add_birthday(args: CmdArgs, book: AddressBook):
     name, birthday = args
 
     record = book.find(name)
     record.add_birthday(birthday)
 
-    return "Birthday updated."
+    print_success_message("Birthday updated.")
 
 
 @with_input_error_handler("Enter contact name and email.")
-def add_email(args: CmdArgs, book: AddressBook) -> str:
+def add_email(args: CmdArgs, book: AddressBook):
     name, email = args
 
     record = book.find(name)
     record.add_email(email)
 
-    return "Email updated."
+    print_success_message("Email updated.")
 
 
 @with_input_error_handler("Enter contact name and address.")
-def add_address(args: CmdArgs, book: AddressBook) -> str:
+def add_address(args: CmdArgs, book: AddressBook):
     name, *address_parts = args
 
     address = get_contact_address(address_parts)
@@ -58,103 +66,99 @@ def add_address(args: CmdArgs, book: AddressBook) -> str:
     record = book.find(name)
     record.add_address(address)
 
-    return "Address updated."
+    print_success_message("Address updated.")
 
 
 @with_input_error_handler("Enter contact name, old phone and new phone please.")
-def change_phone(args: CmdArgs, book: AddressBook) -> str:
+def change_phone(args: CmdArgs, book: AddressBook):
     name, old_phone, new_phone = args
 
     record = book.find(name)
     record.edit_phone(old_phone, new_phone)
 
-    return "Phone updated."
+    print_success_message("Phone updated.")
 
 
 @with_input_error_handler("Enter contact name please.")
-def delete_contact(args: CmdArgs, book: AddressBook) -> str:
+def delete_contact(args: CmdArgs, book: AddressBook):
     (name,) = args
 
     book.delete(name)
 
-    return "Contact removed."
+    print_success_message("Contact removed.")
 
 
 @with_input_error_handler("Enter contact name and phone please.")
-def delete_phone(args: CmdArgs, book: AddressBook) -> str:
+def delete_phone(args: CmdArgs, book: AddressBook):
     name, phone = args
 
     record = book.find(name)
 
     if len(record.phones) < 2:
-        return "Unable to delete last phone number from contact."
+        raise OperationForbiddenError(
+            "Unable to delete last phone number from contact."
+        )
 
     record.remove_phone(phone)
 
-    return "Phone removed."
+    print_success_message("Phone removed.")
 
 
 @with_input_error_handler("Enter contact name please.")
-def show_contact(args: CmdArgs, book: AddressBook) -> str:
+def show_contact(args: CmdArgs, book: AddressBook):
     (name,) = args
 
     contact = book.find(name)
 
-    return str(contact)
+    print_single_item(contact)
 
 
 @with_empty_check("contacts")
-def show_all(args: CmdArgs, book: AddressBook) -> str:
-    return format_records(list(book.values()))
+def show_all(args: CmdArgs, book: AddressBook):
+    print_contacts_list(list(book.values()))
 
 
 @with_empty_check("contacts")
 @with_input_error_handler("Enter search condition please.")
-def search_by_phone(args: CmdArgs, book: AddressBook) -> str:
+def search_by_phone(args: CmdArgs, book: AddressBook):
     (search_fragment,) = args
 
     found_records = book.search_by_phone(search_fragment)
 
-    return format_records(found_records)
+    print_contacts_list(found_records)
 
 
 @with_empty_check("contacts")
 @with_input_error_handler("Enter search condition please.")
-def search_by_email(args: CmdArgs, book: AddressBook) -> str:
+def search_by_email(args: CmdArgs, book: AddressBook):
     (search_fragment,) = args
 
     found_records = book.search_by_email(search_fragment)
 
-    return format_records(found_records)
+    print_contacts_list(found_records)
 
 
 @with_input_error_handler("Enter contact name please.")
-def show_phone(args: CmdArgs, book: AddressBook) -> str:
+def show_phone(args: CmdArgs, book: AddressBook):
     (name,) = args
 
     record = book.find(name)
 
-    if not record.phones:
-        f"Contact {record.name} has no phones yet"
-
-    return f"Contact name: {record.name}, phones: {'; '.join(p.value for p in record.phones)}"
+    print_contact_phones(record)
 
 
 @with_input_error_handler("Enter contact name please.")
-def show_birthday(args: CmdArgs, book: AddressBook) -> str:
+def show_birthday(args: CmdArgs, book: AddressBook):
     (name,) = args
 
     record = book.find(name)
 
-    if not record.birthday:
-        raise NotFoundError(f"Birthday date is unknown for {name}")
-
-    return f"Contact name: {record.name}, birthday: {record.birthday}"
+    print_contact_birthday(record)
 
 
 @with_empty_check("contacts")
 @with_input_error_handler()
-def birthdays(args: CmdArgs, book: AddressBook) -> str:
+def birthdays(args: CmdArgs, book: AddressBook):
     # check the number of upcoming days specified by the user, if the user has not entered anything, the app defaults to 7
     days = int(args[0]) if len(args) else 7
 
@@ -163,7 +167,4 @@ def birthdays(args: CmdArgs, book: AddressBook) -> str:
 
     upcoming_birthdays = book.get_upcoming_birthdays(days)
 
-    if not upcoming_birthdays:
-        return f"No upcoming birthdays in the next {days} days."
-
-    return format_upcoming_birthdays(upcoming_birthdays)
+    print_upcoming_birthdays(upcoming_birthdays, days)

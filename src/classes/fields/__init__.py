@@ -5,6 +5,7 @@ from .address import Address
 from .description import Description
 from .email import Email
 from .tag import Tag
+from .field import Field
 
 __all__ = [
     "Birthday",
@@ -14,4 +15,5 @@ __all__ = [
     "Description",
     "Email",
     "Tag",
+    "Field",
 ]
