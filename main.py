@@ -36,7 +36,7 @@ def main():
 
         if command in exit_commands:
             save_data(address_book, note_book)
-            print("Good bye!")
+            menu.print_good_bye()
             break
 
         if command in help_commands:
@@ -49,9 +49,7 @@ def main():
             print(notebook_commands[command]["handler"](args, note_book))
 
         else:
-            print(
-                f"Invalid command or no command entered. Type 'help' to see possible options"
-            )
+            menu.print_invalid_cmd()
 
 
 if __name__ == "__main__":

@@ -25,9 +25,21 @@ class BotMenu:
         self.__table.align[description_field] = "l"
         self.__table.add_rows(table_rows)
 
+    def __print_message(self, message: str, color: str = ""):
+        print(color + f"\n{message}\n" + Style.RESET_ALL)
+
     def print_help_menu(self):
         string_table = str(self.__table)
-        print(string_table + Style.RESET_ALL)
+        self.__print_message(string_table)
 
     def print_welcome(self):
-        print(Fore.GREEN + "\nWelcome to the assistant bot!\n" + Style.RESET_ALL)
+        self.__print_message("Welcome to the assistant bot!", Fore.GREEN)
+
+    def print_good_bye(self):
+        self.__print_message("Good bye!", Fore.GREEN)
+
+    def print_invalid_cmd(self):
+        self.__print_message(
+            f"Invalid command or no command entered. Type {Fore.YELLOW + "'help'" + Fore.RED} to see possible options",
+            Fore.RED,
+        )
