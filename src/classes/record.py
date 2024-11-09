@@ -1,8 +1,10 @@
-from .fields import Name, Phone, Birthday, Email, Address
+from .fields import Name, Phone, Birthday, Email, Address, Field
+from .table_formatted import TableFormatted
 from .custom_errors import NotFoundError, DuplicationError
+from src.output.table_output import TableItem
 
 
-class Record:
+class Record(TableFormatted):
     def __init__(self, name: str):
         self.name = Name(name)
         self.phones: list[Phone] = []
@@ -50,8 +52,29 @@ class Record:
 
         return searched_phone
 
-    def __str__(self):
-        def check_data(property) -> str:
-            return "no data" if property is None else property.value
+    def __get_phones_str(self) -> str:
+        return ", ".join(p.value for p in self.phones)
 
-        return f"Contact name: {self.name.value}, phones: {'; '.join(p.value for p in self.phones)}, birthday: {check_data(self.birthday)}, email: {check_data(self.email)}, address: {check_data(self.address)}"
+    def __get_str_value(self, value: Field | None):
+        return value and str(value) or ""
+
+    def format_for_table(self) -> TableItem:
+        return {
+            "Contact name": str(self.name),
+            "Phones": self.__get_phones_str(),
+            "Birthday": self.__get_str_value(self.birthday),
+            "Email": self.__get_str_value(self.email),
+            "Address": self.__get_str_value(self.address),
+        }
+
+    def format_birthday_for_table(self) -> TableItem:
+        return {
+            "Contact name": str(self.name),
+            "Birthday": self.__get_str_value(self.birthday),
+        }
+
+    def format_phones_for_table(self) -> TableItem:
+        return {
+            "Contact name": str(self.name),
+            "Phones": self.__get_phones_str(),
+        }

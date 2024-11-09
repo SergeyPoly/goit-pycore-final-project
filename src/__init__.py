@@ -5,6 +5,7 @@ from src.commands.help_commands import help_commands
 from src.commands.notebook_commands import notebook_commands
 from src.serializers import load_data, save_data
 from src.autocompletion import get_autocomplete_input
+from src.classes import BotMenu
 
 __all__ = [
     "parse_input",
@@ -15,4 +16,5 @@ __all__ = [
     "load_data",
     "save_data",
     "get_autocomplete_input",
+    "BotMenu",
 ]

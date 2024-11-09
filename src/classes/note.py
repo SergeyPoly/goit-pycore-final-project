@@ -1,17 +1,21 @@
 from .fields import Name, Description, Tag
+from .table_formatted import TableFormatted
 from .custom_errors import DuplicationError, NotFoundError
+from src.output.table_output import TableItem
 
 
-class Note:
+class Note(TableFormatted):
     def __init__(self, name: str, description: str):
         self.name = Name(name)
         self.description = Description(description)
         self.tags: list[Tag] = []
 
-    def __str__(self):
-        return str(
-            f"Name: {self.name}, Description: {self.description}, tags: {[str(t) for t in self.tags]}"
-        )
+    def format_for_table(self) -> TableItem:
+        return {
+            "Name": str(self.name),
+            "Description": str(self.description),
+            "Tags": ", ".join(t.value for t in self.tags),
+        }
 
     def edit(self, description: str):
         self.description = Description(description)
