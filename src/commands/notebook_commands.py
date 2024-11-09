@@ -7,7 +7,7 @@ notebook_commands = {
     },
     "edit-note": {
         "handler": notebook_handlers.edit_note,
-        "description": "Edits note's description. Requires name and mew description",
+        "description": "Edits note's description. Requires name and new description",
     },
     "find-note": {
         "handler": notebook_handlers.find_note,

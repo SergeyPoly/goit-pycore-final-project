@@ -33,13 +33,13 @@ contact_commands = {
         "handler": contact_handlers.delete_phone,
         "description": "deletes phone number of the specified contact, requires 'name' and 'phone number'",
     },
-    "show-contact": {
-        "handler": contact_handlers.show_contact,
-        "description": "Show contact by the name",
-    },
     "show-all-contacts": {
         "handler": contact_handlers.show_all,
         "description": "shows all contacts info in the address book, filters by 'name' if search option specified by the user",
+    },
+    "show-contact": {
+        "handler": contact_handlers.show_contact,
+        "description": "shows contact by the name",
     },
     "search-contacts-by-phone": {
         "handler": contact_handlers.search_by_phone,
