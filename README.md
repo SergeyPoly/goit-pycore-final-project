@@ -6,11 +6,14 @@ A DEMO version of Personal Assistant Bot - command-line tool designed to assist 
 
 ## Installation
 
+### PyPI
+1. pip install personal-assistant-bot-pyoneers
+3. enter command `bot_run`. 
+
+### Git
 1. git clone https://github.com/SergeyPoly/goit-pycore-final-project.git
-
 2. pip install .
-
-3. enter command `run_demo`. 
+3. enter command `python main.py`. 
 
 
 ### Common Commands
